@@ -76,3 +76,6 @@
 [submodule "pack/plugins/start/yats.vim"]
 	path = pack/plugins/start/yats.vim
 	url = https://github.com/HerringtonDarkholme/yats.vim
+[submodule "pack/plugins/start/dash.vim"]
+	path = pack/plugins/start/dash.vim
+	url = http://github.com/rizzatti/dash.vim.git

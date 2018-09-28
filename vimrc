@@ -40,7 +40,7 @@ set cursorline
 set cursorcolumn
 set laststatus=2
 
-setlocal textwidth=79
+setlocal textwidth=119
 setlocal colorcolumn=+1
 
 set clipboard=unnamed
@@ -104,11 +104,19 @@ colorscheme ayu
 """"""""""""""""""""""""""""""
 let $MYPYPATH .= "."
 
-if !empty($VIRTUAL_ENV)
-    let g:python3_host_prog = "python3"
-    let $MYPYPATH .= $VIRTUAL_ENV . "/lib/python3.6/site-packages:"
+if !has($NVIM)
+    let g:python_host_prog = "/Users/songww/.pyenv/versions/2.7.15/envs/py2devel/bin/python"
+    let g:python3_host_prog = "/Users/songww/.pyenv/versions/3.7.0/envs/py3devel/bin/python"
 else
+    let g:python_host_prog = "python2"
     let g:python3_host_prog = "python3"
+endif
+
+if !empty($VIRTUAL_ENV)
+    py import vim, commands
+    py ver = commands.getoutput("$VIRTUAL_ENV/bin/python --version").split()[1]
+    py major, minor = ver.split('.')[:2]
+    py vim.command("let $MYPYPATH .= $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages:\"".format(major=major, minor=minor))
 endif
 
 let g:ale_enabled = 1
@@ -127,8 +135,8 @@ let g:ale_fixers = {
 \   'python': ['autopep8', 'black', 'isort']
 \}
 
-let g:ale_python_black_options = ' -l 79'
-let g:ale_python_flake_options = ' --mypy-config mypy.ini'
+let g:ale_python_black_options = ' -l 119'
+let g:ale_python_flake_options = ' --max-line-length 119 --mypy-config mypy.ini'
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -147,7 +155,7 @@ let g:airline#extensions#tabline#enabled = 1
 " AirlineTheme solarized
 " let g:airline_solarized_bg='dark'
 let g:airline_theme="papercolor"
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 
 """"""""""""""""""""""""""""""""""""""
 " python syntax
@@ -164,7 +172,7 @@ let g:jedi#completions_enabled = 1
 
 let g:jedi#completions_command = "<C-x>"
 let g:jedi#use_splits_not_buffers = "bottom"
-let g:jedi#force_py_version = '3'
+" let g:jedi#force_py_version = '3'
 
 """"""""""""""""""""""""""""""
 " vim gitgutter
@@ -248,7 +256,9 @@ autocmd InsertLeave * call ToggleFcitxDisabled()
 """""""""""""""""""""""""""""""""""""""""""""""""""
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""
-set pyxversion=3
+if !empty($NVIM)
+    set pyxversion=3
+endif
 set encoding=utf-8
 
 

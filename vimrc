@@ -136,7 +136,9 @@ let g:ale_fixers = {
 \}
 
 let g:ale_python_black_options = ' -l 119'
-let g:ale_python_flake_options = ' --max-line-length 119 --mypy-config mypy.ini'
+let g:ale_python_flake8_options = ' --max-line-length 119 --mypy-config mypy.ini'
+let g:ale_python_autopep8_path = 'python -m autopep8'
+let g:ale_python_autopep8_options = ' --max-line-length 119'
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -155,7 +157,7 @@ let g:airline#extensions#tabline#enabled = 1
 " AirlineTheme solarized
 " let g:airline_solarized_bg='dark'
 let g:airline_theme="papercolor"
-let g:airline_powerline_fonts = 0
+let g:airline_powerline_fonts = 1
 
 """"""""""""""""""""""""""""""""""""""
 " python syntax

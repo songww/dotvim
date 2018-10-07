@@ -13,3 +13,9 @@ mkdir -p ~/.local/share/nvim/site
 ln -sf ~/.my-vim/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.my-vim/pack ~/.local/share/nvim/site/pack
 ```
+
+#### powerline fonts
+```bash
+wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
+wget https://raw.githubusercontent.com/ryanoasis/powerline-extra-symbols/master/PowerlineExtraSymbols.otf
+```

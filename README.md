@@ -5,7 +5,7 @@
 git clone https://github.com/songww/dotvim ~/.vim
 ln -sf ~/.vim/vimrc ~/.vimrc
 cd ~/.vim
-git submodules update --init
+git submodule update --init
 cd -
 ```
 
@@ -16,7 +16,7 @@ mkdir -p ~/.local/share/nvim/site
 ln -sf ~/.my-vim/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.my-vim/pack ~/.local/share/nvim/site/pack
 cd ~/.my-vim
-git submodules update --init
+git submodule update --init
 cd -
 ```
 

@@ -64,9 +64,6 @@
 [submodule "pack/plugins/start/vim-snippets"]
 	path = pack/plugins/start/vim-snippets
 	url = git://github.com/honza/vim-snippets.git
-[submodule "pack/plugins/start/vim-solarized8"]
-	path = pack/plugins/start/vim-solarized8
-	url = https://github.com/lifepillar/vim-solarized8.git
 [submodule "pack/plugins/start/vim-visual-multi"]
 	path = pack/plugins/start/vim-visual-multi
 	url = https://github.com/mg979/vim-visual-multi

@@ -13,9 +13,6 @@
 [submodule "pack/plugins/start/jedi-vim"]
 	path = pack/plugins/start/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim
-[submodule "pack/plugins/start/NeoSolarized"]
-	path = pack/plugins/start/NeoSolarized
-	url = https://github.com/iCyMind/NeoSolarized
 [submodule "pack/plugins/start/nerdtree"]
 	path = pack/plugins/start/nerdtree
 	url = https://github.com/scrooloose/nerdtree

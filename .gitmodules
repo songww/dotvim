@@ -73,3 +73,30 @@
 [submodule "pack/plugins/start/dash.vim"]
 	path = pack/plugins/start/dash.vim
 	url = https://github.com/rizzatti/dash.vim.git
+[submodule "pack/plugins/start/ncm2"]
+    path = pack/plugins/start/ncm2
+    url = https://github.com/ncm2/ncm2.git
+[submodule "pack/plugins/start/ncm2-phpactor"]
+    path = pack/plugins/start/ncm2-phpactor
+    url = https://github.com/phpactor/ncm2-phpactor.git
+[submodule "pack/plugins/start/php.vim"]
+    path = pack/plugins/start/php.vim
+    url = https://github.com/StanAngeloff/php.vim.git
+[submodule "pack/plugins/start/phpactor"]
+    path = pack/plugins/start/phpactor
+    url = https://github.com/phpactor/phpactor.git
+[submodule "pack/plugins/start/tagbar"]
+    path = pack/plugins/start/tagbar
+    url = https://github.com/majutsushi/tagbar.git
+[submodule "pack/plugins/start/phpfolding.vim"]
+    path = pack/plugins/start/phpfolding.vim
+    url = https://github.com/rayburgemeestre/phpfolding.vim.git
+[submodule "pack/plugins/start/vdebug"]
+    path = pack/plugins/start/vdebug
+    url = https://github.com/vim-vdebug/vdebug.git
+[submodule "pack/plugins/start/vim-gutentags"]
+    path = pack/plugins/start/vim-gutentags
+    url =https://github.com/ludovicchabant/vim-gutentags.git
+[submodule "pack/plugins/start/vim-php-refactoring-toolbox"]
+    path = pack/plugins/start/vim-php-refactoring-toolbox
+    url = https://github.com/adoy/vim-php-refactoring-toolbox

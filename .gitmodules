@@ -100,3 +100,6 @@
 [submodule "pack/plugins/start/vim-php-refactoring-toolbox"]
     path = pack/plugins/start/vim-php-refactoring-toolbox
     url = https://github.com/adoy/vim-php-refactoring-toolbox
+[submodule "pack/plugins/start/vim-go"]
+    path = pack/plugins/start/vim-go
+    url = https://github.com/fatih/vim-go

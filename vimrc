@@ -104,13 +104,8 @@ colorscheme ayu
 """"""""""""""""""""""""""""""
 let $MYPYPATH .= "."
 
-if !has($NVIM)
-    let g:python_host_prog = "/Users/songww/.pyenv/versions/2.7.15/envs/py2devel/bin/python"
-    let g:python3_host_prog = "/Users/songww/.pyenv/versions/3.7.0/envs/py3devel/bin/python"
-else
-    let g:python_host_prog = "python2"
-    let g:python3_host_prog = "python3"
-endif
+let g:python_host_prog = "python2"
+let g:python3_host_prog = "python3"
 
 if !empty($VIRTUAL_ENV)
     py import vim, commands
@@ -132,6 +127,7 @@ let g:ale_sign_column_always = 1
 let g:ale_javascript_eslint_use_global = 1
 
 let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'python': ['autopep8', 'black', 'isort']
 \}
 
@@ -144,13 +140,13 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " DESC: Remove unused whitespaces
-fun! Trim_whitespaces() "{{{
-    let cursor_pos = getpos('.')
-    silent! %s/\s\+$//
-    call setpos('.', cursor_pos)
-endfunction "}}}
+" fun! Trim_whitespaces() "{{{
+"     let cursor_pos = getpos('.')
+"     silent! %s/\s\+$//
+"     call setpos('.', cursor_pos)
+" endfunction "}}}
 
-au BufWritePre <buffer> call Trim_whitespaces()
+" au BufWritePre <buffer> call Trim_whitespaces()
 
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -174,7 +170,7 @@ let g:jedi#completions_enabled = 1
 
 let g:jedi#completions_command = "<C-x>"
 let g:jedi#use_splits_not_buffers = "bottom"
-" let g:jedi#force_py_version = '3'
+let g:jedi#force_py_version = '3'
 
 """"""""""""""""""""""""""""""
 " vim gitgutter
@@ -214,7 +210,7 @@ autocmd FileType html vnoremap <buffer> <leader>ff :call RangeHtmlBeautify()<cr>
 """"""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
 
-let g:deoplete#sources#jedi#show_docstring = 1
+" let g:deoplete#sources#jedi#show_docstring = 1
 
 """""""""""""""""""""""""""""
 " UltiSnips
@@ -223,6 +219,7 @@ let g:UltiSnipsExpandTrigger="<leader>ex"
 let g:UltiSnipsJumpForwardTrigger="<C-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
+let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsUsePythonVersion = 3
 
 let g:ultisnips_python_style = "google"
@@ -261,7 +258,6 @@ autocmd InsertLeave * call ToggleFcitxDisabled()
 if !empty($NVIM)
     set pyxversion=3
 endif
-set encoding=utf-8
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -273,3 +269,11 @@ packloadall
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 silent! helptags ALL
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call deoplete#custom#option(
+\ 'omni_patterns',
+\ {
+\   'go': '[^. *\t]\.\w*'
+\ }
+\)

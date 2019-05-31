@@ -103,3 +103,6 @@
 [submodule "pack/plugins/start/vim-go"]
     path = pack/plugins/start/vim-go
     url = https://github.com/fatih/vim-go
+[submodule "pack/plugins/start/rust.vim"]
+	path = pack/plugins/start/rust.vim
+	url = https://github.com/rust-lang/rust.vim

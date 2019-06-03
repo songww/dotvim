@@ -108,10 +108,10 @@ let g:python_host_prog = "python2"
 let g:python3_host_prog = "python3"
 
 if !empty($VIRTUAL_ENV)
-    py import vim, commands
-    py ver = commands.getoutput("$VIRTUAL_ENV/bin/python --version").split()[1]
-    py major, minor = ver.split('.')[:2]
-    py vim.command("let $MYPYPATH .= $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages:\"".format(major=major, minor=minor))
+    pyx import vim, subprocess
+    pyx pyver = subprocess.check_output("$VIRTUAL_ENV/bin/python --version", shell=True).split()[1]
+    pyx major, minor = pyver.split(b'.')[:2]
+    pyx vim.command("let $MYPYPATH .= $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages:\"".format(major=major, minor=minor))
 endif
 
 let g:ale_enabled = 1

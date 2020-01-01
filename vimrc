@@ -1,3 +1,6 @@
+set runtimepath+=/Users/songww/.vim/pack/plugins/start/nvim-yarp
+set runtimepath+=/Users/songww/.vim/pack/plugins/start/vim-hug-neovim-rpc
+
 syntax on
 filetype plugin indent on
 
@@ -104,19 +107,17 @@ colorscheme ayu
 """"""""""""""""""""""""""""""
 let $MYPYPATH .= "."
 
-if !has($NVIM)
-    let g:python_host_prog = "/Users/songww/.pyenv/versions/2.7.15/envs/py2devel/bin/python"
-    let g:python3_host_prog = "/Users/songww/.pyenv/versions/3.7.0/envs/py3devel/bin/python"
-else
-    let g:python_host_prog = "python2"
-    let g:python3_host_prog = "python3"
-endif
+let g:deoplete#_python_version_check = 1
+
+let g:python_host_prog = "/usr/local/bin/python2"
+let g:python3_host_prog = "/usr/local/bin/python3"
 
 if !empty($VIRTUAL_ENV)
     py import vim, commands
     py ver = commands.getoutput("$VIRTUAL_ENV/bin/python --version").split()[1]
     py major, minor = ver.split('.')[:2]
     py vim.command("let $MYPYPATH .= $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages:\"".format(major=major, minor=minor))
+    py vim.command("let $PYTHONPATH = $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages\"".format(major=major, minor=minor))
 endif
 
 let g:ale_enabled = 1
@@ -128,16 +129,18 @@ let g:ale_open_list = 1
 let g:ale_list_window_size = 5
 let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
+let g:ale_completion_enabled = 0
 
 let g:ale_javascript_eslint_use_global = 1
 
 let g:ale_fixers = {
-\   'python': ['autopep8', 'black', 'isort']
+\   'python': ['autopep8', 'black']
 \}
 
-let g:ale_python_black_options = ' -l 119'
-let g:ale_python_flake8_options = ' --max-line-length 119 --mypy-config mypy.ini'
-let g:ale_python_autopep8_path = 'python -m autopep8'
+let g:ale_python_black_options = ' -l 119 --skip-string-normalization --skip-numeric-underscore-normalization'
+let g:ale_python_flake8_path = 'python2 -m flake8'
+let g:ale_python_flake8_options = ' --max-line-length 119'
+let g:ale_python_autopep8_path = 'python2 -m autopep8'
 let g:ale_python_autopep8_options = ' --max-line-length 119'
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
@@ -161,7 +164,7 @@ let g:airline_powerline_fonts = 1
 
 """"""""""""""""""""""""""""""""""""""
 " python syntax
-" """"""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""
 " Highlight all by default
 let g:python_highlight_all = 1
 
@@ -170,11 +173,13 @@ let g:python_highlight_all = 1
 """"""""""""""""""""""""""""""
 let g:jedi#auto_initialization = 1
 let g:jedi#auto_vim_configuration = 1
+
 let g:jedi#completions_enabled = 1
 
+let g:jedi#force_py_version = '3'
 let g:jedi#completions_command = "<C-x>"
-let g:jedi#use_splits_not_buffers = "bottom"
-" let g:jedi#force_py_version = '3'
+
+let g:jedi#use_splits_not_buffers = "winwidth"
 
 """"""""""""""""""""""""""""""
 " vim gitgutter
@@ -212,9 +217,14 @@ autocmd FileType html vnoremap <buffer> <leader>ff :call RangeHtmlBeautify()<cr>
 """"""""""""""""""""""""""""""""""""""
 " deoplete
 """"""""""""""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
 
 let g:deoplete#sources#jedi#show_docstring = 1
+
+"""""""""""""""""""""""""""""""""""""""
+" tagbar
+"""""""""""""""""""""""""""""""""""""""
+nmap <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""
 " UltiSnips
@@ -261,8 +271,6 @@ autocmd InsertLeave * call ToggleFcitxDisabled()
 if !empty($NVIM)
     set pyxversion=3
 endif
-set encoding=utf-8
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Put these lines at the very end of your vimrc file.
@@ -273,3 +281,9 @@ packloadall
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 silent! helptags ALL
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call deoplete#custom#option({
+\  'auto_complete': v:false,
+\  'on_insert_enter': v:false,
+\})

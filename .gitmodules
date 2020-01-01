@@ -106,9 +106,6 @@
 [submodule "pack/plugins/start/emmet-vim"]
 	path = pack/plugins/start/emmet-vim
 	url = https://github.com/mattn/emmet-vim.git
-[submodule "pack/plugins/start/vim-coffee-script"]
-	path = pack/plugins/start/vim-coffee-script
-	url = https://github.com/kchmck/vim-coffee-script.git
 [submodule "pack/plugins/start/vim-racer"]
 	path = pack/plugins/start/vim-racer
 	url = https://github.com/racer-rust/vim-racer

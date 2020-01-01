@@ -109,15 +109,15 @@ let $MYPYPATH .= "."
 
 let g:deoplete#_python_version_check = 1
 
-let g:python_host_prog = "/usr/local/bin/python2"
-let g:python3_host_prog = "/usr/local/bin/python3"
+let g:python_host_prog = "python2"
+let g:python3_host_prog = "python3"
 
 if !empty($VIRTUAL_ENV)
-    py import vim, commands
-    py ver = commands.getoutput("$VIRTUAL_ENV/bin/python --version").split()[1]
-    py major, minor = ver.split('.')[:2]
-    py vim.command("let $MYPYPATH .= $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages:\"".format(major=major, minor=minor))
-    py vim.command("let $PYTHONPATH = $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages\"".format(major=major, minor=minor))
+    pyx import vim, subprocess
+    pyx pyver = subprocess.check_output("$VIRTUAL_ENV/bin/python --version", shell=True).split()[1]
+    pyx major, minor = pyver.split(b'.')[:2]
+    pyx vim.command("let $MYPYPATH .= $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages:\"".format(major=major, minor=minor))
+    pyx vim.command("let $PYTHONPATH = $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages\"".format(major=major, minor=minor))
 endif
 
 let g:ale_enabled = 1
@@ -134,7 +134,8 @@ let g:ale_completion_enabled = 0
 let g:ale_javascript_eslint_use_global = 1
 
 let g:ale_fixers = {
-\   'python': ['autopep8', 'black']
+\   'python': ['autopep8', 'black'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 
 let g:ale_python_black_options = ' -l 119 --skip-string-normalization --skip-numeric-underscore-normalization'
@@ -147,13 +148,13 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " DESC: Remove unused whitespaces
-fun! Trim_whitespaces() "{{{
-    let cursor_pos = getpos('.')
-    silent! %s/\s\+$//
-    call setpos('.', cursor_pos)
-endfunction "}}}
+" fun! Trim_whitespaces() "{{{
+"     let cursor_pos = getpos('.')
+"     silent! %s/\s\+$//
+"     call setpos('.', cursor_pos)
+" endfunction "}}}
 
-au BufWritePre <buffer> call Trim_whitespaces()
+" au BufWritePre <buffer> call Trim_whitespaces()
 
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -219,7 +220,7 @@ autocmd FileType html vnoremap <buffer> <leader>ff :call RangeHtmlBeautify()<cr>
 """"""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 0
 
-let g:deoplete#sources#jedi#show_docstring = 1
+" let g:deoplete#sources#jedi#show_docstring = 1
 
 """""""""""""""""""""""""""""""""""""""
 " tagbar
@@ -233,6 +234,7 @@ let g:UltiSnipsExpandTrigger="<leader>ex"
 let g:UltiSnipsJumpForwardTrigger="<C-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
+let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsUsePythonVersion = 3
 
 let g:ultisnips_python_style = "google"
@@ -283,7 +285,15 @@ packloadall
 silent! helptags ALL
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 call deoplete#custom#option({
 \  'auto_complete': v:false,
 \  'on_insert_enter': v:false,
 \})
+
+call deoplete#custom#option(
+\ 'omni_patterns',
+\ {
+\   'go': '[^. *\t]\.\w*'
+\ }
+\)

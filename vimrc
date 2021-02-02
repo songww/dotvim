@@ -1,95 +1,98 @@
-set runtimepath+=/Users/songww/.vim/pack/plugins/start/nvim-yarp
-set runtimepath+=/Users/songww/.vim/pack/plugins/start/vim-hug-neovim-rpc
+scriptencoding 'utf-8'
 
-syntax on
-filetype plugin indent on
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
 
-""""""
-set ts=4
-set sw=4
+" Make sure you use single quotes
+
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+"Plug 'junegunn/vim-easy-align'
+
+" Any valid git URL is allowed
+"Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+
+" Multiple Plug commands can be written in a single line using | separators
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
+" On-demand loading
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+
+" Using a non-default branch
+"Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+
+" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+Plug 'fatih/vim-go', { 'tag': '*', 'for': 'go' }
+
+" Plugin options
+"Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim', 'for': 'go' }
+Plug 'nsf/gocode', { 'tag': '*', 'for': 'go' }
+
+" Plugin outside ~/.vim/plugged with post-update hook
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" Unmanaged plugin (manually installed and updated)
+"Plug '~/my-prototype-plugin'
+
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'dense-analysis/ale'
+
+Plug 'ayu-theme/ayu-vim'
+
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+Plug 'vim-python/python-syntax'
+
+Plug 'vim-airline/vim-airline'
+
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'airblade/vim-gitgutter'
+
+Plug 'Vimjas/vim-python-pep8-indent'
+
+" completion-nvim is an auto completion framework that aims to provide a better completion experience with neovim's built-in LSP.
+Plug 'nvim-lua/completion-nvim'
+
+" Initialize plugin system
+call plug#end()
+
+" To map <Esc> to exit terminal-mode:
+tnoremap <Esc> <C-\><C-n>
+
 set expandtab
+set tabstop=4
+set shiftwidth=4
 set softtabstop=4
 
-autocmd FileType python setlocal et sta sw=4 sts=4
-autocmd FileType css,html,yaml,xml,json setlocal et sta sw=2 sts=2
-autocmd FileType markdown,javascript setlocal et sta sw=2 sts=2
-
-" Jump to the last position when reopening a file
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup resetindent
+  autocmd FileType css,html,yaml,xml,json,markdown,javascript,vim setlocal shiftwidth=2 softtabstop=2
+augroup END
 
 set helplang=cn
-set encoding=utf-8
-
-""""""
-"显示当前的行号列号：
-set ruler
-"在状态栏显示正在输入的命令
-set showcmd
-""""""""""
-
-set mouse=
-" 禁止光标闪烁
-" set gcr=a:blinkon0-ver01
-set guicursor=i-c-n:blinkon0-ver01
-" 禁止显示滚动条
-set guioptions-=l
-set guioptions-=L
-set guioptions-=r
-set guioptions-=R
-set guioptions-=m
-set guioptions-=T
-
-set cursorline
-set cursorcolumn
-set laststatus=2
-
-setlocal textwidth=119
-setlocal colorcolumn=+1
-
-set clipboard=unnamed
-set clipboard+=unnamedplus
 
 "显示行号：
 set number
 "为方便复制，用<F2>开启/关闭行号显示:
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 
+" 忽略搜索大小写
+set ignorecase
+set smartcase
+
 set modeline
 
-set fillchars+=stl:\ ,stlnc:\
+set cursorline
+set cursorcolumn
 
-" 搜索忽略大小写
-set ignorecase
-" 搜索逐字符高亮
-set hlsearch
-set incsearch
-
-" 高亮显示匹配的括号
-set showmatch
+setlocal textwidth=119
+setlocal colorcolumn=+1
 
 """" leader
-let mapleader = ";"
-
-"""" NERDTree
-map <leader>n :NERDTreeToggle<CR>
-
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif  "" 如果没有带文件或目录
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif   """ 如果打开的是目录
-
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
-"""""""""""""""""""""""""""""""""""
+let mapleader = ';'
 
 set t_Co=256
 
@@ -97,70 +100,268 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors     " enable true colors support
 set background=dark
 " let ayucolor="light"  " for light version of theme
-let ayucolor="mirage" " for mirage version of theme
+let ayucolor='mirage' " for mirage version of theme
 " let ayucolor="dark"   " for dark version of theme
 colorscheme ayu
 " colorscheme solarized8_dark
 
-""""""""""""""""""""""""""""""
-" python3 binding
-""""""""""""""""""""""""""""""
-let $MYPYPATH .= "."
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <leader>D    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <leader>k <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1<leader>D   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> <leader>r    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <leader>0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> <leader>W    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> <leader>d    <cmd>lua vim.lsp.buf.declaration()<CR>
 
-let g:deoplete#_python_version_check = 1
+autocmd FileType python,rust,c,cpp setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
-let g:python_host_prog = "python2"
-let g:python3_host_prog = "python3"
 
-if !empty($VIRTUAL_ENV)
-    pyx import vim, subprocess
-    pyx pyver = subprocess.check_output("$VIRTUAL_ENV/bin/python --version", shell=True).split()[1]
-    pyx major, minor = pyver.split(b'.')[:2]
-    pyx vim.command("let $MYPYPATH .= $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages:\"".format(major=major, minor=minor))
-    pyx vim.command("let $PYTHONPATH = $VIRTUAL_ENV . \"/lib/python{major}.{minor}/site-packages\"".format(major=major, minor=minor))
-endif
+" Avoid showing message extra message when using completion
+set shortmess+=c
+set completeopt=menuone,preview,noinsert
+
+let g:completion_trigger_keyword_length = 3
+let g:completion_trigger_on_delete = 1
+let g:completion_enable_snippet = 'UltiSnips'
+let g:completion_timer_cycle = 200  " default value is 80
+
+" possible value: "length", "alphabet", "none"
+let g:completion_sorting = "none"
+
+let g:completion_matching_smart_case = 1
+
+lua << EOF
+local lspconfig = require 'lspconfig'
+local configs = require 'lspconfig/configs'
+local util = require 'lspconfig/util'
+
+local custom_lsp_attach = function(client)
+  -- See `:help nvim_buf_set_keymap()` for more information
+  -- vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true})
+  -- vim.api.nvim_buf_set_keymap(0, 'n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true})
+  -- ... and other keymappings for LSP
+
+  -- Use LSP as the handler for omnifunc.
+  --    See `:help omnifunc` and `:help ins-completion` for more information.
+  -- vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- For plugins with an `on_attach` callback, call them here. For example:
+  -- require('completion').on_attach(client)
+end
+
+-- https://clangd.llvm.org/extensions.html#switch-between-sourceheader
+local function switch_source_header(bufnr)
+  bufnr = util.validate_bufnr(bufnr)
+  local params = { uri = vim.uri_from_bufnr(bufnr) }
+  vim.lsp.buf_request(bufnr, 'textDocument/switchSourceHeader', params, function(err, _, result)
+    if err then error(tostring(err)) end
+    if not result then print ("Corresponding file can’t be determined") return end
+    vim.api.nvim_command('edit '..vim.uri_to_fname(result))
+  end)
+end
+
+local root_pattern = util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")
+
+configs.clangd = {
+  default_config =  {
+    cmd = {"/usr/local/opt/llvm/bin/clangd", "--background-index"};
+    filetypes = {"c", "cpp", "objc", "objcpp"};
+    root_dir = function(fname)
+      local filename = util.path.is_absolute(fname) and fname
+        or util.path.join(vim.loop.cwd(), fname)
+      return root_pattern(filename) or util.path.dirname(filename)
+    end;
+    capabilities = {
+      textDocument = {
+        completion = {
+          editsNearCursor = true
+        }
+      }
+    },
+  };
+  commands = {
+    ClangdSwitchSourceHeader = {
+      function()
+        switch_source_header(0)
+      end;
+      description = "Switch between source/header";
+    };
+  };
+  docs = {
+    description = [[
+https://clang.llvm.org/extra/clangd/Installation.html
+**NOTE:** Clang >= 9 is recommended! See [this issue for more](https://github.com/neovim/nvim-lsp/issues/23).
+clangd relies on a [JSON compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html) specified
+as compile_commands.json or, for simpler projects, a compile_flags.txt.
+For details on how to automatically generate one using CMake look [here](https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html).
+]];
+    default_config = {
+      root_dir = [[root_pattern("compile_commands.json", "compile_flags.txt", ".git")]];
+      on_init = [[function to handle changing offsetEncoding]];
+      capabilities = [[default capabilities, with offsetEncoding utf-8]];
+    };
+  };
+}
+
+configs.clangd.switch_source_header = switch_source_header
+
+lspconfig.clangd.setup{
+  on_attach=require'completion'.on_attach
+}
+
+configs.jedi_language_server = {
+  default_config = {
+    cmd = {"/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/jedi-language-server"};
+    filetypes = {"python"};
+    root_dir = util.root_pattern("pyproject.toml", "poetry.lock", "requirements.txt", ".git");
+    settings = {
+      jedi = {
+        enable = true;
+        startupMessage = true;
+        markupKindPreferred = { "markdown" };
+        jediSettings = {
+          autoImportModules = [["numpy"], ["pandas"], ["tensorflow"]];
+        };
+        executable = {
+          disableSnippets = false;
+        };
+      };
+    };
+  };
+  docs = {
+    description = [[
+https://github.com/pappasam/jedi-language-server
+`jedi-language-server`, a language server for Python, built on top of jedi
+    ]];
+    default_config = {
+      root_dir = "vim's starting directory";
+    };
+  };
+};
+
+lspconfig.jedi_language_server.setup{
+  on_attach=require'completion'.on_attach
+}
+
+configs.rust_analyzer = {
+  default_config = {
+    cmd = {"/usr/local/bin/rust-analyzer"};
+    filetypes = {"rust"};
+    root_dir = util.root_pattern("Cargo.toml", "rust-project.json");
+    settings = {
+      ["rust-analyzer"] = {
+      	assist = {
+          importMergeBehaviour = {"last"};
+	        importPrefix = {"by_crate"};
+        };
+	      callInfo = {
+          full = true;
+        };
+    	  cargo = {
+          autoreload = true;
+        };
+    	  completion = {
+          addCallArgumentSnippets = true;
+    	    addCallParenthesis = true;
+    	    postfix = {
+            enable = true;
+          };
+        };
+    	  debug = {
+          engine = {"auto"};
+        };
+    	  hoverActions = {
+          enable = true;
+    	    gotoTypeDef = true;
+    	    implementations = true;
+        };
+    	  inlayHints = {
+          chainingHints = true;
+    	    enable = true;
+    	    parameterHints = true;
+    	    typeHints = true;
+        };
+    	  lens = {
+          enable = true;
+    	    implementations = true;
+    	    methodReferences = true;
+        };
+    	  notifications = {
+          cargoTomlNotFound = true;
+        };
+	      procMacro = {
+          enable = true;
+        };
+      };
+    };
+  };
+  docs = {
+    package_json = "https://raw.githubusercontent.com/rust-analyzer/rust-analyzer/master/editors/code/package.json";
+    description = [[
+https://github.com/rust-analyzer/rust-analyzer
+rust-analyzer (aka rls 2.0), a language server for Rust
+See [docs](https://github.com/rust-analyzer/rust-analyzer/tree/master/docs/user#settings) for extra settings.
+    ]];
+    default_config = {
+      root_dir = [[root_pattern("Cargo.toml", "rust-project.json")]];
+    };
+  };
+};
+
+lspconfig.rust_analyzer.setup{
+  on_attach=require'completion'.on_attach
+}
+
+-- vim:et ts=2 sw=2
+EOF
+
+let g:python3_host_prog = "/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/python3"
 
 let g:ale_enabled = 1
 let g:ale_linters = {
 \   'python': ['flake8', 'black'],
-\   'javascript': ['eslint']
 \}
 let g:ale_open_list = 1
-let g:ale_list_window_size = 5
 let g:ale_fix_on_save = 1
+let g:ale_list_window_size = 5
 let g:ale_sign_column_always = 1
-let g:ale_completion_enabled = 0
-
-let g:ale_javascript_eslint_use_global = 1
 
 let g:ale_fixers = {
 \   'python': ['autopep8', 'black'],
+\   'rust': ['rustfmt'],
+\   'c': ['clangtidy', 'clang-format'],
+\   'cpp': ['clangtidy', 'clang-format'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 
+let g:ale_python_black_executable = '/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/black'
 let g:ale_python_black_options = ' -l 119 --skip-string-normalization --skip-numeric-underscore-normalization'
-let g:ale_python_flake8_path = 'python2 -m flake8'
+let g:ale_python_flake8_executable = '/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/flake8'
 let g:ale_python_flake8_options = ' --max-line-length 119'
-let g:ale_python_autopep8_path = 'python2 -m autopep8'
+let g:ale_python_autopep8_executable = '/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/autopep8'
 let g:ale_python_autopep8_options = ' --max-line-length 119'
+
+let g:ale_c_clangd_executable = '/usr/local/opt/llvm/bin/clangd'
+let g:ale_c_clangtidy_executable = '/usr/local/opt/llvm/bin/clang-tidy'
+let g:ale_c_clangformat_executable = '/usr/local/opt/llvm/bin/clang-format'
+
+let g:ale_cpp_clangd_executable = '/usr/local/opt/llvm/bin/clangd'
+let g:ale_cpp_clangtidy_executable = '/usr/local/opt/llvm/bin/clang-tidy'
+let g:ale_cpp_clangformat_executable = '/usr/local/opt/llvm/bin/clang-format'
+
+let g:ale_disable_lsp = 1
+let g:ale_completion_enabled = 0
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-" DESC: Remove unused whitespaces
-" fun! Trim_whitespaces() "{{{
-"     let cursor_pos = getpos('.')
-"     silent! %s/\s\+$//
-"     call setpos('.', cursor_pos)
-" endfunction "}}}
-
-" au BufWritePre <buffer> call Trim_whitespaces()
 
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 " AirlineTheme solarized
 " let g:airline_solarized_bg='dark'
-let g:airline_theme="papercolor"
+let g:airline_theme = 'papercolor'
 let g:airline_powerline_fonts = 1
 
 """"""""""""""""""""""""""""""""""""""
@@ -169,131 +370,18 @@ let g:airline_powerline_fonts = 1
 " Highlight all by default
 let g:python_highlight_all = 1
 
-""""""""""""""""""""""""""""""
-" jedi
-""""""""""""""""""""""""""""""
-let g:jedi#auto_initialization = 1
-let g:jedi#auto_vim_configuration = 1
-
-let g:jedi#completions_enabled = 1
-
-let g:jedi#force_py_version = '3'
-let g:jedi#completions_command = "<C-x>"
-
-let g:jedi#use_splits_not_buffers = "winwidth"
-
-""""""""""""""""""""""""""""""
-" vim gitgutter
-""""""""""""""""""""""""""""""
-" jump to next hunk (change)
-" nmap ]c <Plug>GitGutterNextHunk
-" jump to previous hunk
-" nmap [c <Plug>GitGutterPrevHunk
-" stage the hunk
-" nmap <Leader>hs <Plug>GitGutterStageHunk
-" undo it
-" nmap <Leader>hu <Plug>GitGutterUndoHunk
-" preview a hunk's changes
-" nmap <Leader>hp <Plug>GitGutterPreviewHunk
-
-""""""""""""""""""""""""""""""
-" run code
-""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""
-" jsbeautify
-""""""""""""""""""""""""""""""
-autocmd FileType javascript noremap <buffer>  <leader>ff :call JsBeautify()<cr>
-autocmd FileType json noremap <buffer>  <leader>ff :call JsonBeautify()<cr>
-autocmd FileType jsx noremap <buffer>  <leader>ff :call JsxBeautify()<cr>
-autocmd FileType css noremap <buffer>  <leader>ff :call CSSBeautify()<cr>
-autocmd FileType html noremap <buffer>  <leader>ff :call HtmlBeautify()<cr>
-
-
-autocmd FileType javascript vnoremap <buffer>  <leader>ff :call RangeJsBeautify()<cr>
-autocmd FileType json vnoremap <buffer> <leader>ff :call RangeJsonBeautify()<cr>
-autocmd FileType jsx vnoremap <buffer> <leader>ff :call RangeJsxBeautify()<cr>
-autocmd FileType css vnoremap <buffer> <leader>ff :call RangeCSSBeautify()<cr>
-autocmd FileType html vnoremap <buffer> <leader>ff :call RangeHtmlBeautify()<cr>
-""""""""""""""""""""""""""""""""""""""
-" deoplete
-""""""""""""""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 0
-
-" let g:deoplete#sources#jedi#show_docstring = 1
-
-"""""""""""""""""""""""""""""""""""""""
-" tagbar
-"""""""""""""""""""""""""""""""""""""""
-nmap <F8> :TagbarToggle<CR>
-
 """""""""""""""""""""""""""""
 " UltiSnips
 """""""""""""""""""""""""""""
-let g:UltiSnipsExpandTrigger="<leader>ex"
-let g:UltiSnipsJumpForwardTrigger="<C-j>"
-let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+let g:UltiSnipsExpandTrigger = '<leader>ex'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
-let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsEditSplit = 'vertical'
 let g:UltiSnipsUsePythonVersion = 3
 
-let g:ultisnips_python_style = "google"
+let g:ultisnips_python_style = 'google'
 
-"""""""""""""""""""""""""""""
-" nvim-ipy
-"""""""""""""""""""""""""""""
-map <silent> <leader>rl <Plug>(IPy-Run)
-map <silent> <leader>rc <Plug>(IPy-Run)
-
-"""""""""""""""""""""""""""""
-" yapf
-"""""""""""""""""""""""""""""
-autocmd FileType json map <leader>ff :%!python -m json.tool
-" autocmd FileType python map <leader>ff :call yapf#YAPF()<CR>
-" map <leader>ff :call yapf#YAPF()<CR>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Auto disable fcitx
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:input_toggle = 1
-function! ToggleFcitxDisabled()
-    let s:input_status = system("fcitx-remote")
-    if s:input_status == 2
-        let g:input_toggle = 1
-        let l:a = system("fcitx-remote -c")
-    endif
-endfunc
-
-set ttimeoutlen=150
-autocmd InsertLeave * call ToggleFcitxDisabled()
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-if !empty($NVIM)
-    set pyxversion=3
-endif
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Put these lines at the very end of your vimrc file.
-
-" Load all plugins now.
-" Plugins need to be added to runtimepath before helptags can be generated.
-packloadall
-" Load all of the helptags now, after plugins have been loaded.
-" All messages and errors will be ignored.
-silent! helptags ALL
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-call deoplete#custom#option({
-\  'auto_complete': v:false,
-\  'on_insert_enter': v:false,
-\})
-
-call deoplete#custom#option(
-\ 'omni_patterns',
-\ {
-\   'go': '[^. *\t]\.\w*'
-\ }
-\)
+augroup backtolastposition
+  autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+augroup END

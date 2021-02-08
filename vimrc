@@ -57,6 +57,8 @@ Plug 'Vimjas/vim-python-pep8-indent'
 " completion-nvim is an auto completion framework that aims to provide a better completion experience with neovim's built-in LSP.
 Plug 'nvim-lua/completion-nvim'
 
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+
 " Initialize plugin system
 call plug#end()
 
@@ -213,7 +215,7 @@ lspconfig.clangd.setup{
 
 configs.jedi_language_server = {
   default_config = {
-    cmd = {"/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/jedi-language-server"};
+    cmd = {os.getenv("HOME") .. "/.pyenv/versions/neovim-support/bin/jedi-language-server"};
     filetypes = {"python"};
     root_dir = util.root_pattern("pyproject.toml", "poetry.lock", "requirements.txt", ".git");
     settings = {
@@ -298,7 +300,7 @@ configs.rust_analyzer = {
     };
   };
   docs = {
-    package_json = "https://raw.githubusercontent.com/rust-analyzer/rust-analyzer/master/editors/code/package.json";
+    package_json = "https://raw.fastgit.org/rust-analyzer/rust-analyzer/master/editors/code/package.json";
     description = [[
 https://github.com/rust-analyzer/rust-analyzer
 rust-analyzer (aka rls 2.0), a language server for Rust
@@ -317,7 +319,7 @@ lspconfig.rust_analyzer.setup{
 -- vim:et ts=2 sw=2
 EOF
 
-let g:python3_host_prog = "/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/python3"
+let g:python3_host_prog = $HOME . "/.pyenv/versions/neovim-support/bin/python3"
 
 let g:ale_enabled = 1
 let g:ale_linters = {
@@ -329,18 +331,18 @@ let g:ale_list_window_size = 5
 let g:ale_sign_column_always = 1
 
 let g:ale_fixers = {
-\   'python': ['autopep8', 'black'],
+\   'python': ['add_blank_lines_for_python_control_statements', 'autoimport', 'autopep8', 'black', 'isort'],
 \   'rust': ['rustfmt'],
 \   'c': ['clangtidy', 'clang-format'],
 \   'cpp': ['clangtidy', 'clang-format'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 
-let g:ale_python_black_executable = '/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/black'
+let g:ale_python_black_executable = $HOME . '/.pyenv/versions/neovim-support/bin/black'
 let g:ale_python_black_options = ' -l 119 --skip-string-normalization --skip-numeric-underscore-normalization'
-let g:ale_python_flake8_executable = '/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/flake8'
+let g:ale_python_flake8_executable = $HOME . '/.pyenv/versions/neovim-support/bin/flake8'
 let g:ale_python_flake8_options = ' --max-line-length 119'
-let g:ale_python_autopep8_executable = '/Users/songmowei/.pyenv/versions/3.8.6/envs/neovim-support/bin/autopep8'
+let g:ale_python_autopep8_executable = $HOME . '/.pyenv/versions/neovim-support/bin/autopep8'
 let g:ale_python_autopep8_options = ' --max-line-length 119'
 
 let g:ale_c_clangd_executable = '/usr/local/opt/llvm/bin/clangd'
@@ -381,6 +383,10 @@ let g:UltiSnipsEditSplit = 'vertical'
 let g:UltiSnipsUsePythonVersion = 3
 
 let g:ultisnips_python_style = 'google'
+
+" enable popup mode
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
 
 augroup backtolastposition
   autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif

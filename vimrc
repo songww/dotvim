@@ -24,17 +24,13 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 
 " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
-Plug 'fatih/vim-go', { 'tag': '*', 'for': 'go' }
+"Plug 'fatih/vim-go', { 'tag': '*', 'for': 'go' }
 
 " Plugin options
 "Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim', 'for': 'go' }
-Plug 'nsf/gocode', { 'tag': '*', 'for': 'go' }
 
-" Plugin outside ~/.vim/plugged with post-update hook
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-
-" Unmanaged plugin (manually installed and updated)
-"Plug '~/my-prototype-plugin'
+"Plug 'junegunn/fzf', { 'dir': '/usr/local/opt/fzf', 'do': './install --all' }
+Plug '/usr/local/opt/fzf'
 
 Plug 'neovim/nvim-lspconfig'
 
@@ -58,6 +54,29 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'nvim-lua/completion-nvim'
 
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'skywind3000/Leaderf-snippet'
+
+Plug 'sheerun/vim-polyglot'
+
+Plug 'tpope/vim-commentary'
+
+Plug 'tpope/vim-markdown'
+
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+Plug 'elzr/vim-json'
+
+Plug 'easymotion/vim-easymotion'
+
+Plug 'vim-test/vim-test'
+
+Plug 'jiangmiao/auto-pairs'
+
+Plug 'octol/vim-cpp-enhanced-highlight'
+
+Plug 'wellle/targets.vim'
+
+Plug 'jparise/vim-graphql'
 
 " Initialize plugin system
 call plug#end()
@@ -388,6 +407,20 @@ let g:ultisnips_python_style = 'google'
 let g:Lf_WindowPosition = 'popup'
 let g:Lf_PreviewInPopup = 1
 
+" maps
+inoremap <c-x><c-j> <c-\><c-o>:Leaderf snippet<cr>
+" optional: preview
+let g:Lf_PreviewResult = get(g:, 'Lf_PreviewResult', {})
+let g:Lf_PreviewResult.snippet = 1
+
 augroup backtolastposition
   autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 augroup END
+
+map <Leader>m <Plug>(easymotion-prefix)
+
+nmap <silent> <Leader>tn :TestNearest<CR>
+nmap <silent> <Leader>tf :TestFile<CR>
+nmap <silent> <Leader>ts :TestSuite<CR>
+nmap <silent> <Leader>tl :TestLast<CR>
+nmap <silent> <Leader>tg :TestVisit<CR>

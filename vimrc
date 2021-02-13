@@ -60,11 +60,10 @@ Plug 'sheerun/vim-polyglot'
 
 Plug 'tpope/vim-commentary'
 
-Plug 'tpope/vim-markdown'
-
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 Plug 'elzr/vim-json'
+Plug 'cespare/vim-toml'
 
 Plug 'easymotion/vim-easymotion'
 
@@ -77,6 +76,9 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'wellle/targets.vim'
 
 Plug 'jparise/vim-graphql'
+
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 " Initialize plugin system
 call plug#end()
@@ -424,3 +426,32 @@ nmap <silent> <Leader>tf :TestFile<CR>
 nmap <silent> <Leader>ts :TestSuite<CR>
 nmap <silent> <Leader>tl :TestLast<CR>
 nmap <silent> <Leader>tg :TestVisit<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" markdown
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" https://github.com/plasticboy/vim-markdown#mappings
+" To fold in a style like python-mode
+let g:vim_markdown_folding_style_pythonic = 1
+" Allow for the TOC window to auto-fit when it's possible for it to shrink. It never increases its default size (half screen)
+let g:vim_markdown_toc_autofit = 1
+" Concealing is set for some syntax.
+" For example, conceal [link text](link url) as just link text. Also, _italic_ and *italic* will conceal to just italic.
+"   Similarly __bold__, **bold**, ___italic bold___, and ***italic bold*** will conceal to just bold, bold, italic bold, and italic bold respectively.
+set conceallevel=2
+" Disabling conceal for code fences
+let g:vim_markdown_conceal_code_blocks = 0
+" This feature allows the ge command to follow named anchors in links of the form file#anchor or just #anchor, where file may omit the .md extension as usual.
+"   Two variables control its operation:
+let g:vim_markdown_follow_anchor = 1
+" Highlight YAML front matter as used by Jekyll or Hugo.
+let g:vim_markdown_frontmatter = 1
+" Highlight TOML front matter as used by Hugo.
+" TOML syntax highlight requires vim-toml.
+let g:vim_markdown_toml_frontmatter = 1
+" Highlight JSON front matter as used by Hugo.
+" JSON syntax highlight requires vim-json.
+let g:vim_markdown_json_frontmatter = 1
+" vim-markdown automatically insert the indent.
+" By default, the number of spaces of indent is 4. If you'd like to change the number as 2, just write:
+let g:vim_markdown_new_list_item_indent = 2

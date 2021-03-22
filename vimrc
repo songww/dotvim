@@ -14,7 +14,11 @@ call plug#begin('~/.vim/plugged')
 "Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 
 " Multiple Plug commands can be written in a single line using | separators
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+
+Plug 'honza/vim-snippets'
+
+Plug 'norcalli/snippets.nvim'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -160,6 +164,9 @@ local lspconfig = require 'lspconfig'
 local configs = require 'lspconfig/configs'
 local util = require 'lspconfig/util'
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true;
+
 local custom_lsp_attach = function(client)
   -- See `:help nvim_buf_set_keymap()` for more information
   -- vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true})
@@ -196,13 +203,6 @@ configs.clangd = {
         or util.path.join(vim.loop.cwd(), fname)
       return root_pattern(filename) or util.path.dirname(filename)
     end;
-    capabilities = {
-      textDocument = {
-        completion = {
-          editsNearCursor = true
-        }
-      }
-    },
   };
   commands = {
     ClangdSwitchSourceHeader = {
@@ -231,7 +231,8 @@ For details on how to automatically generate one using CMake look [here](https:/
 configs.clangd.switch_source_header = switch_source_header
 
 lspconfig.clangd.setup{
-  on_attach=require'completion'.on_attach
+  capabilities = capabilities;
+  on_attach=require'completion'.on_attach,
 }
 
 configs.jedi_language_server = {
@@ -265,7 +266,8 @@ https://github.com/pappasam/jedi-language-server
 };
 
 lspconfig.jedi_language_server.setup{
-  on_attach=require'completion'.on_attach
+  capabilities = capabilities;
+  on_attach=require'completion'.on_attach,
 }
 
 configs.rust_analyzer = {
@@ -334,7 +336,8 @@ See [docs](https://github.com/rust-analyzer/rust-analyzer/tree/master/docs/user#
 };
 
 lspconfig.rust_analyzer.setup{
-  on_attach=require'completion'.on_attach
+  capabilities = capabilities;
+  on_attach=require'completion'.on_attach,
 }
 
 -- vim:et ts=2 sw=2

@@ -132,15 +132,15 @@ let ayucolor='mirage' " for mirage version of theme
 colorscheme ayu
 " colorscheme solarized8_dark
 
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> <leader>D    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <leader>k <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1<leader>D   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> <leader>r    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> <leader>0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> <leader>W    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> <leader>d    <cmd>lua vim.lsp.buf.declaration()<CR>
+"nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+"nnoremap <silent> <leader>D    <cmd>lua vim.lsp.buf.implementation()<CR>
+"nnoremap <silent> <leader>k <cmd>lua vim.lsp.buf.signature_help()<CR>
+"nnoremap <silent> <leader>D   <cmd>lua vim.lsp.buf.type_definition()<CR>
+"nnoremap <silent> <leader>r    <cmd>lua vim.lsp.buf.references()<CR>
+"nnoremap <silent> <leader>0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+"nnoremap <silent> <leader>W    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+"nnoremap <silent> <leader>d    <cmd>lua vim.lsp.buf.declaration()<CR>
 
 autocmd FileType python,rust,c,cpp setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
@@ -167,18 +167,47 @@ local util = require 'lspconfig/util'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true;
 
-local custom_lsp_attach = function(client)
-  -- See `:help nvim_buf_set_keymap()` for more information
-  -- vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true})
-  -- vim.api.nvim_buf_set_keymap(0, 'n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true})
-  -- ... and other keymappings for LSP
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  -- Use LSP as the handler for omnifunc.
-  --    See `:help omnifunc` and `:help ins-completion` for more information.
-  -- vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- For plugins with an `on_attach` callback, call them here. For example:
-  -- require('completion').on_attach(client)
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', '<leader>D', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', '<leader>d', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', '<leader>i', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<leader>t', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<C-[>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "<leader>s", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "<leader>s", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  end
+
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
+  end
 end
 
 -- https://clangd.llvm.org/extensions.html#switch-between-sourceheader
@@ -232,7 +261,7 @@ configs.clangd.switch_source_header = switch_source_header
 
 lspconfig.clangd.setup{
   capabilities = capabilities;
-  on_attach=require'completion'.on_attach,
+  on_attach=on_attach,
 }
 
 configs.jedi_language_server = {
@@ -267,7 +296,7 @@ https://github.com/pappasam/jedi-language-server
 
 lspconfig.jedi_language_server.setup{
   capabilities = capabilities;
-  on_attach=require'completion'.on_attach,
+  on_attach=on_attach,
 }
 
 configs.rust_analyzer = {
@@ -337,7 +366,7 @@ See [docs](https://github.com/rust-analyzer/rust-analyzer/tree/master/docs/user#
 
 lspconfig.rust_analyzer.setup{
   capabilities = capabilities;
-  on_attach=require'completion'.on_attach,
+  on_attach=on_attach,
 }
 
 -- vim:et ts=2 sw=2

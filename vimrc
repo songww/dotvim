@@ -22,21 +22,8 @@ Plug 'norcalli/snippets.nvim'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-"Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 
-" Using a non-default branch
-"Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
-
-" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
-"Plug 'fatih/vim-go', { 'tag': '*', 'for': 'go' }
-
-" Plugin options
-"Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim', 'for': 'go' }
-
-"Plug 'junegunn/fzf', { 'dir': '/usr/local/opt/fzf', 'do': './install --all' }
 Plug '/usr/local/opt/fzf'
-
-Plug 'neovim/nvim-lspconfig'
 
 Plug 'dense-analysis/ale'
 
@@ -54,10 +41,8 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'Vimjas/vim-python-pep8-indent'
 
-" completion-nvim is an auto completion framework that aims to provide a better completion experience with neovim's built-in LSP.
-Plug 'nvim-lua/completion-nvim'
-
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+
 Plug 'skywind3000/Leaderf-snippet'
 
 Plug 'sheerun/vim-polyglot'
@@ -82,7 +67,10 @@ Plug 'wellle/targets.vim'
 Plug 'jparise/vim-graphql'
 
 Plug 'godlygeek/tabular'
+
 Plug 'plasticboy/vim-markdown'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Initialize plugin system
 call plug#end()
@@ -91,6 +79,7 @@ call plug#end()
 tnoremap <Esc> <C-\><C-n>
 
 set expandtab
+set autoindent
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -103,17 +92,70 @@ set helplang=cn
 
 "显示行号：
 set number
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+set wildmenu
+" Give more space for displaying messages.
+set cmdheight=2
+set laststatus=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
 "为方便复制，用<F2>开启/关闭行号显示:
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 
 " 忽略搜索大小写
-set ignorecase
+set hlsearch
 set smartcase
+set ignorecase
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
 
+set ruler
 set modeline
-
 set cursorline
 set cursorcolumn
+
+if !&scrolloff
+  set scrolloff=1
+endif
+if !&sidescrolloff
+  set sidescrolloff=5
+endif
+set display+=lastline
+
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if &tabpagemax < 50
+  set tabpagemax=50
+endif
+
+set sessionoptions-=options
+set viewoptions-=options
+
+set autoread
 
 setlocal textwidth=119
 setlocal colorcolumn=+1
@@ -146,224 +188,6 @@ let g:completion_timer_cycle = 200  " default value is 80
 let g:completion_sorting = "none"
 
 let g:completion_matching_smart_case = 1
-
-lua << EOF
-local lspconfig = require 'lspconfig'
-local configs = require 'lspconfig/configs'
-local util = require 'lspconfig/util'
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true;
-
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', '<leader>D', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', '<leader>d', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', '<leader>i', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<leader>t', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '<C-[>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<leader>s", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<leader>s", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  end
-
-  -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]], false)
-  end
-end
-
--- https://clangd.llvm.org/extensions.html#switch-between-sourceheader
-local function switch_source_header(bufnr)
-  bufnr = util.validate_bufnr(bufnr)
-  local params = { uri = vim.uri_from_bufnr(bufnr) }
-  vim.lsp.buf_request(bufnr, 'textDocument/switchSourceHeader', params, function(err, _, result)
-    if err then error(tostring(err)) end
-    if not result then print ("Corresponding file can’t be determined") return end
-    vim.api.nvim_command('edit '..vim.uri_to_fname(result))
-  end)
-end
-
-local root_pattern = util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")
-
-configs.clangd = {
-  default_config =  {
-    cmd = {"/usr/local/opt/llvm/bin/clangd", "--background-index"};
-    filetypes = {"c", "cpp", "objc", "objcpp"};
-    root_dir = function(fname)
-      local filename = util.path.is_absolute(fname) and fname
-        or util.path.join(vim.loop.cwd(), fname)
-      return root_pattern(filename) or util.path.dirname(filename)
-    end;
-  };
-  commands = {
-    ClangdSwitchSourceHeader = {
-      function()
-        switch_source_header(0)
-      end;
-      description = "Switch between source/header";
-    };
-  };
-  docs = {
-    description = [[
-https://clang.llvm.org/extra/clangd/Installation.html
-**NOTE:** Clang >= 9 is recommended! See [this issue for more](https://github.com/neovim/nvim-lsp/issues/23).
-clangd relies on a [JSON compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html) specified
-as compile_commands.json or, for simpler projects, a compile_flags.txt.
-For details on how to automatically generate one using CMake look [here](https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html).
-]];
-    default_config = {
-      root_dir = [[root_pattern("compile_commands.json", "compile_flags.txt", ".git")]];
-      on_init = [[function to handle changing offsetEncoding]];
-      capabilities = [[default capabilities, with offsetEncoding utf-8]];
-    };
-  };
-}
-
-configs.clangd.switch_source_header = switch_source_header
-
-lspconfig.clangd.setup{
-  capabilities = capabilities;
-  on_attach=on_attach,
-}
-
-configs.jedi_language_server = {
-  default_config = {
-    cmd = {os.getenv("HOME") .. "/.pyenv/versions/neovim-support/bin/jedi-language-server"};
-    filetypes = {"python"};
-    root_dir = util.root_pattern("pyproject.toml", "poetry.lock", "requirements.txt", ".git");
-    settings = {
-      jedi = {
-        enable = true;
-        startupMessage = true;
-        markupKindPreferred = { "markdown" };
-        jediSettings = {
-          autoImportModules = [["numpy"], ["pandas"], ["tensorflow"]];
-        };
-        executable = {
-          disableSnippets = false;
-        };
-      };
-    };
-  };
-  docs = {
-    description = [[
-https://github.com/pappasam/jedi-language-server
-`jedi-language-server`, a language server for Python, built on top of jedi
-    ]];
-    default_config = {
-      root_dir = "vim's starting directory";
-    };
-  };
-};
-
-lspconfig.jedi_language_server.setup{
-  capabilities = capabilities;
-  on_attach=on_attach,
-}
-
-configs.rust_analyzer = {
-  default_config = {
-    cmd = {"/usr/local/bin/rust-analyzer"};
-    filetypes = {"rust"};
-    root_dir = util.root_pattern("Cargo.toml", "rust-project.json");
-    settings = {
-      ["rust-analyzer"] = {
-      	assist = {
-          importMergeBehaviour = {"last"};
-          importPrefix = {"by_crate"};
-        };
-        callInfo = {
-          full = true;
-        };
-   	    cargo = {
-          autoreload = true;
-          allFeatures = true;
-          target = "aarch64-linux-android";
-        };
-    	completion = {
-          addCallArgumentSnippets = true;
-    	  addCallParenthesis = true;
-    	  postfix = {
-            enable = true;
-          };
-        };
-    	debug = {
-          engine = {"auto"};
-        };
-    	hoverActions = {
-          enable = true;
-    	  gotoTypeDef = true;
-    	  implementations = true;
-        };
-    	inlayHints = {
-          chainingHints = true;
-    	  enable = true;
-    	  parameterHints = true;
-    	  typeHints = true;
-        };
-    	lens = {
-          enable = true;
-    	  implementations = true;
-    	  methodReferences = true;
-        };
-    	notifications = {
-          cargoTomlNotFound = true;
-        };
-	    procMacro = {
-          enable = true;
-        };
-        runnables = {
-          cargoExtraArgs = { "--release" };
-        }
-      };
-    };
-  };
-  docs = {
-    package_json = "https://raw.fastgit.org/rust-analyzer/rust-analyzer/master/editors/code/package.json";
-    description = [[
-https://github.com/rust-analyzer/rust-analyzer
-rust-analyzer (aka rls 2.0), a language server for Rust
-See [docs](https://github.com/rust-analyzer/rust-analyzer/tree/master/docs/user#settings) for extra settings.
-    ]];
-    default_config = {
-      root_dir = [[root_pattern("Cargo.toml", "rust-project.json")]];
-    };
-  };
-};
-
-lspconfig.rust_analyzer.setup{
-  capabilities = capabilities;
-  on_attach=on_attach,
-}
-
--- vim:et ts=2 sw=2
-EOF
 
 let g:python3_host_prog = $HOME . "/.pyenv/versions/neovim-support/bin/python3"
 
@@ -406,6 +230,7 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 " AirlineTheme solarized
 " let g:airline_solarized_bg='dark'
@@ -464,19 +289,156 @@ let g:vim_markdown_toc_autofit = 1
 " For example, conceal [link text](link url) as just link text. Also, _italic_ and *italic* will conceal to just italic.
 "   Similarly __bold__, **bold**, ___italic bold___, and ***italic bold*** will conceal to just bold, bold, italic bold, and italic bold respectively.
 set conceallevel=2
-" Disabling conceal for code fences
-let g:vim_markdown_conceal_code_blocks = 0
-" This feature allows the ge command to follow named anchors in links of the form file#anchor or just #anchor, where file may omit the .md extension as usual.
-"   Two variables control its operation:
-let g:vim_markdown_follow_anchor = 1
-" Highlight YAML front matter as used by Jekyll or Hugo.
-let g:vim_markdown_frontmatter = 1
-" Highlight TOML front matter as used by Hugo.
-" TOML syntax highlight requires vim-toml.
-let g:vim_markdown_toml_frontmatter = 1
-" Highlight JSON front matter as used by Hugo.
-" JSON syntax highlight requires vim-json.
-let g:vim_markdown_json_frontmatter = 1
-" vim-markdown automatically insert the indent.
-" By default, the number of spaces of indent is 4. If you'd like to change the number as 2, just write:
-let g:vim_markdown_new_list_item_indent = 2
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Coc
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <leader><space> coc#refresh()
+else
+  inoremap <silent><expr> <leader><@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+"xmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)

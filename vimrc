@@ -130,20 +130,8 @@ set background=dark
 let ayucolor='mirage' " for mirage version of theme
 " let ayucolor="dark"   " for dark version of theme
 colorscheme ayu
-" colorscheme solarized8_dark
-
-"nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-"nnoremap <silent> <leader>D    <cmd>lua vim.lsp.buf.implementation()<CR>
-"nnoremap <silent> <leader>k <cmd>lua vim.lsp.buf.signature_help()<CR>
-"nnoremap <silent> <leader>D   <cmd>lua vim.lsp.buf.type_definition()<CR>
-"nnoremap <silent> <leader>r    <cmd>lua vim.lsp.buf.references()<CR>
-"nnoremap <silent> <leader>0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-"nnoremap <silent> <leader>W    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-"nnoremap <silent> <leader>d    <cmd>lua vim.lsp.buf.declaration()<CR>
 
 autocmd FileType python,rust,c,cpp setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
 
 " Avoid showing message extra message when using completion
 set shortmess+=c
@@ -171,7 +159,7 @@ local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -308,46 +296,51 @@ configs.rust_analyzer = {
       ["rust-analyzer"] = {
       	assist = {
           importMergeBehaviour = {"last"};
-	        importPrefix = {"by_crate"};
+          importPrefix = {"by_crate"};
         };
-	      callInfo = {
+        callInfo = {
           full = true;
         };
-    	  cargo = {
+   	    cargo = {
           autoreload = true;
+          allFeatures = true;
+          target = "aarch64-linux-android";
         };
-    	  completion = {
+    	completion = {
           addCallArgumentSnippets = true;
-    	    addCallParenthesis = true;
-    	    postfix = {
+    	  addCallParenthesis = true;
+    	  postfix = {
             enable = true;
           };
         };
-    	  debug = {
+    	debug = {
           engine = {"auto"};
         };
-    	  hoverActions = {
+    	hoverActions = {
           enable = true;
-    	    gotoTypeDef = true;
-    	    implementations = true;
+    	  gotoTypeDef = true;
+    	  implementations = true;
         };
-    	  inlayHints = {
+    	inlayHints = {
           chainingHints = true;
-    	    enable = true;
-    	    parameterHints = true;
-    	    typeHints = true;
+    	  enable = true;
+    	  parameterHints = true;
+    	  typeHints = true;
         };
-    	  lens = {
+    	lens = {
           enable = true;
-    	    implementations = true;
-    	    methodReferences = true;
+    	  implementations = true;
+    	  methodReferences = true;
         };
-    	  notifications = {
+    	notifications = {
           cargoTomlNotFound = true;
         };
-	      procMacro = {
+	    procMacro = {
           enable = true;
         };
+        runnables = {
+          cargoExtraArgs = { "--release" };
+        }
       };
     };
   };

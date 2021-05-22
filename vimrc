@@ -239,6 +239,23 @@ let g:airline_theme = 'papercolor'
 let g:airline_powerline_fonts = 1
 
 """"""""""""""""""""""""""""""""""""""
+" auto-pairs
+""""""""""""""""""""""""""""""""""""""
+" Toggle Autopairs
+let g:AutoPairsShortcutToggle = '<leader>ap'
+" Fast Wrap
+let g:AutoPairsShortcutFastWrap = '<C-e>'
+" Jump to next closed pair
+let g:AutoPairsShortcutJump = '<C-n>'
+" BackInsert
+let g:AutoPairsShortcutBackInsert = '<leader>b'
+
+" if press < after a word will generate the pair
+au FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
+" the 'begin' 'end' pair write in
+" au FileType ruby let b:AutoPairs = AutoPairsDefine({'\v(^|\W)\zsbegin': 'end//n'})
+
+""""""""""""""""""""""""""""""""""""""
 " python syntax
 """""""""""""""""""""""""""""""""""""
 " Highlight all by default

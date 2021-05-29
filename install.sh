@@ -8,3 +8,11 @@ curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
 if [ ! -f $HOME/.vimrc ]; then
     echo source `pwd`"/vimrc" > $HOME/.vimrc
 fi
+
+if [ ! -d $HOME/.vim ]; then
+    rm -r $HOME/.vim
+fi
+
+ln -sf `pwd`/vim $HOME/.vim
+
+vim -c 'CocInstall -sync coc-json coc-html coc-pyright coc-cmake coc-emmet coc-flutter coc-graphql coc-snippets coc-spell-checker coc-sql coc-tasks coc-yaml coc-toml|q'

@@ -43,7 +43,8 @@ Plug 'Vimjas/vim-python-pep8-indent'
 
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 
-Plug 'skywind3000/Leaderf-snippet'
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
 
 Plug 'sheerun/vim-polyglot'
 
@@ -460,3 +461,26 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x  <Plug>(coc-convert-snippet)
+
+let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-cmake', 'coc-emmet', 'coc-flutter', 'coc-graphql', 'coc-snippets', 'coc-spell-checker', 'coc-sql', 'coc-tasks', 'coc-yaml', 'coc-toml']
+
+" 告诉 asyncrun 运行时自动打开高度为 6 的 quickfix 窗口，不然你看不到任何输出，除非你自己手动用 :copen 打开它。
+let g:asyncrun_open = 6
+
+let g:gitgutter_set_sign_backgrounds = 1
+
+highlight GitGutterAdd    guifg=#009900 ctermfg=2
+highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+highlight GitGutterDelete guifg=#ff2222 ctermfg=1
+
+" Use a custom grep command
+let g:gitgutter_grep = 'rg'
+" turn on line highlighting by default
+let g:gitgutter_highlight_lines = 1
+" turn on line number highlighting by default
+let g:gitgutter_highlight_linenrs = 1
+" To use floating/popup windows for hunk previews
+" Note that on Vim this prevents you staging (partial) hunks via the preview window.
+let g:gitgutter_preview_win_floating = 1
+" To load all hunks into the current window's location list instead of the quickfix list
+let g:gitgutter_use_location_list = 1

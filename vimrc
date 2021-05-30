@@ -71,6 +71,8 @@ Plug 'godlygeek/tabular'
 
 Plug 'plasticboy/vim-markdown'
 
+Plug 'ianding1/leetcode.vim'
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Initialize plugin system
@@ -484,3 +486,12 @@ let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_preview_win_floating = 1
 " To load all hunks into the current window's location list instead of the quickfix list
 let g:gitgutter_use_location_list = 1
+
+nnoremap <leader>ll :LeetCodeList<cr>
+nnoremap <leader>lt :LeetCodeTest<cr>
+nnoremap <leader>ls :LeetCodeSubmit<cr>
+nnoremap <leader>li :LeetCodeSignIn<cr>
+
+let g:leetcode_china = 1
+let g:leetcode_solution_filetype = "rust"
+let g:leetcode_browser = "firefox"

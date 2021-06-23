@@ -34,7 +34,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-python/python-syntax'
 
 Plug 'vim-airline/vim-airline'
-
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'airblade/vim-gitgutter'
@@ -56,6 +55,7 @@ Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
 
 Plug 'easymotion/vim-easymotion'
+Plug 'https://tpope.io/vim/repeat.git'
 
 Plug 'vim-test/vim-test'
 
@@ -95,12 +95,7 @@ set helplang=cn
 
 "显示行号：
 set number
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -178,6 +173,7 @@ let ayucolor='mirage' " for mirage version of theme
 colorscheme ayu
 
 autocmd FileType python,rust,c,cpp setlocal omnifunc=v:lua.vim.lsp.omnifunc
+autocmd FileType python let b:coc_root_patterns = ["pyproject.toml", "poetry.lock", "requirements.txt", ".git"]
 
 " Avoid showing message extra message when using completion
 set shortmess+=c
@@ -239,7 +235,7 @@ let g:airline#extensions#tabline#enabled = 1
 " AirlineTheme solarized
 " let g:airline_solarized_bg='dark'
 let g:airline_theme = 'papercolor'
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 
 """"""""""""""""""""""""""""""""""""""
 " auto-pairs
@@ -290,7 +286,55 @@ augroup backtolastposition
   autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 augroup END
 
-map <Leader>m <Plug>(easymotion-prefix)
+"map <Leader>m <Plug>(easymotion-prefix)
+" <Leader>f{char} to move to {char}
+map  <Leader>s <Plug>(easymotion-bd-f)
+nmap <Leader>s <Plug>(easymotion-overwin-f)
+"map  <Leader>f <Plug>(easymotion-bd-f)
+"nmap <Leader>f <Plug>(easymotion-overwin-f)
+" s{char}{char} to move to {char}{char}
+" Need one more keystroke, but on average, it may be more comfortable.
+"nmap s <Plug>(easymotion-overwin-f2)
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
+
+" n-character search motion
+" You can also search for n characters, which can be used to replace the default search of Vim.
+" It supports incremental highlighting and you can use <Tab> and <S-Tab> to scroll down/up a page.
+" If you press <CR>, you get the usual EasyMotion highlighting and can jump to any matching target destination with a single keystroke.
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+
+" Require tpope/vim-repeat to enable dot repeat support
+" Jump to anywhere with only `s{char}{target}`
+" `s<CR>` repeat last find motion.
+nmap s <Plug>(easymotion-s)
+" Bidirectional & within line 't' motion
+omap t <Plug>(easymotion-bd-tl)
+
+" Disable default mappings
+let g:EasyMotion_do_mapping = 0
+" Use uppercase target labels and type as a lower case
+let g:EasyMotion_use_upper = 0
+ " type `l` and match `l`&`L`
+let g:EasyMotion_smartcase = 0
+" Smartsign (type `3` and match `3`&`#`)
+let g:EasyMotion_use_smartsign_us = 1
 
 nmap <silent> <Leader>tn :TestNearest<CR>
 nmap <silent> <Leader>tf :TestFile<CR>

@@ -515,14 +515,14 @@ let g:asyncrun_open = 6
 
 let g:gitgutter_set_sign_backgrounds = 1
 
-highlight GitGutterAdd    guifg=#009900 ctermfg=2
-highlight GitGutterChange guifg=#bbbb00 ctermfg=3
-highlight GitGutterDelete guifg=#ff2222 ctermfg=1
+"highlight GitGutterAdd    guifg=#009900 ctermfg=2
+"highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+"highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 
 " Use a custom grep command
 let g:gitgutter_grep = 'rg'
 " turn on line highlighting by default
-let g:gitgutter_highlight_lines = 1
+let g:gitgutter_highlight_lines = 0
 " turn on line number highlighting by default
 let g:gitgutter_highlight_linenrs = 1
 " To use floating/popup windows for hunk previews
@@ -530,6 +530,10 @@ let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_preview_win_floating = 1
 " To load all hunks into the current window's location list instead of the quickfix list
 let g:gitgutter_use_location_list = 1
+
+" <Leader>hs 暂存（stage）焦点所在的 hunk
+" <leader>hu 撤销（undo）焦点所在的 hunk
+" <leader>hp 预览（preview）焦点所在的 hunk
 
 nnoremap <leader>ll :LeetCodeList<cr>
 nnoremap <leader>lt :LeetCodeTest<cr>

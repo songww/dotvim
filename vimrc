@@ -205,6 +205,7 @@ let g:ale_fixers = {
 \   'rust': ['rustfmt'],
 \   'c': ['clangtidy', 'clang-format'],
 \   'cpp': ['clangtidy', 'clang-format'],
+\   'json': ['jq'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 

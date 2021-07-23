@@ -15,6 +15,7 @@ fi
 
 ln -sf `pwd`/vim $HOME/.vim
 
+vim -c 'PlugInstall|q'
 vim -c 'CocInstall -sync coc-json coc-html coc-pyright coc-cmake coc-emmet coc-flutter coc-graphql coc-snippets coc-sql coc-tasks coc-yaml coc-toml|q'
 
 pip3 install -U pip wheel

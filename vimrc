@@ -513,6 +513,9 @@ let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-cmake
 
 " 告诉 asyncrun 运行时自动打开高度为 6 的 quickfix 窗口，不然你看不到任何输出，除非你自己手动用 :copen 打开它。
 let g:asyncrun_open = 6
+let g:asyncrun_rootmarks = ['.git', '.venv', 'venv', 'Cargo.toml']
+let g:asynctasks_term_pos = 'bottom'
+let g:asynctasks_term_reuse = 1
 
 let g:gitgutter_set_sign_backgrounds = 1
 

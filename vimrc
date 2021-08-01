@@ -75,6 +75,8 @@ Plug 'ianding1/leetcode.vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+Plug 'pest-parser/pest.vim'
+
 " Initialize plugin system
 call plug#end()
 

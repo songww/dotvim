@@ -207,6 +207,7 @@ let g:ale_fixers = {
 \   'rust': ['rustfmt'],
 \   'c': ['clangtidy', 'clang-format'],
 \   'cpp': ['clangtidy', 'clang-format'],
+\   'json': ['jq'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 
@@ -415,7 +416,11 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <Leader>rn <Plug>(coc-rename)
+xmap <Leader>rn <Plug>(coc-rename)
+
+nmap <Leader>rf <Plug>(coc-refactor)
+xmap <Leader>rf <Plug>(coc-refactor)
 
 " Formatting selected code.
 "xmap <leader>f  <Plug>(coc-format-selected)
@@ -431,8 +436,8 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>fix  <Plug>(coc-codeaction-selected)
+nmap <leader>fix  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
@@ -514,17 +519,20 @@ let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-cmake
 
 " 告诉 asyncrun 运行时自动打开高度为 6 的 quickfix 窗口，不然你看不到任何输出，除非你自己手动用 :copen 打开它。
 let g:asyncrun_open = 6
+let g:asyncrun_rootmarks = ['.git', '.venv', 'venv', 'Cargo.toml']
+let g:asynctasks_term_pos = 'bottom'
+let g:asynctasks_term_reuse = 1
 
 let g:gitgutter_set_sign_backgrounds = 1
 
-highlight GitGutterAdd    guifg=#009900 ctermfg=2
-highlight GitGutterChange guifg=#bbbb00 ctermfg=3
-highlight GitGutterDelete guifg=#ff2222 ctermfg=1
+"highlight GitGutterAdd    guifg=#009900 ctermfg=2
+"highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+"highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 
 " Use a custom grep command
 let g:gitgutter_grep = 'rg'
 " turn on line highlighting by default
-let g:gitgutter_highlight_lines = 1
+let g:gitgutter_highlight_lines = 0
 " turn on line number highlighting by default
 let g:gitgutter_highlight_linenrs = 1
 " To use floating/popup windows for hunk previews
@@ -532,6 +540,10 @@ let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_preview_win_floating = 1
 " To load all hunks into the current window's location list instead of the quickfix list
 let g:gitgutter_use_location_list = 1
+
+" <Leader>hs 暂存（stage）焦点所在的 hunk
+" <leader>hu 撤销（undo）焦点所在的 hunk
+" <leader>hp 预览（preview）焦点所在的 hunk
 
 nnoremap <leader>ll :LeetCodeList<cr>
 nnoremap <leader>lt :LeetCodeTest<cr>

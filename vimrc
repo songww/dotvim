@@ -313,14 +313,14 @@ nmap <Leader>w <Plug>(easymotion-overwin-w)
 " You can also search for n characters, which can be used to replace the default search of Vim.
 " It supports incremental highlighting and you can use <Tab> and <S-Tab> to scroll down/up a page.
 " If you press <CR>, you get the usual EasyMotion highlighting and can jump to any matching target destination with a single keystroke.
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
+"map  / <Plug>(easymotion-sn)
+"omap / <Plug>(easymotion-tn)
 
 " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
 " Without these mappings, `n` & `N` works fine. (These mappings just provide
 " different highlight method and have some other features )
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
+map n <Plug>(easymotion-next)
+map N <Plug>(easymotion-prev)
 
 map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>j <Plug>(easymotion-j)

@@ -210,6 +210,10 @@ let g:ale_fixers = {
 \   'json': ['jq'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
+" Do not lint or fix minified files.
+let g:ale_pattern_options = {
+\ '\.md$': {'ale_linters': [], 'ale_fixers': []},
+\}
 
 let g:ale_python_black_executable = $HOME . '/.pyenv/versions/neovim-support/bin/black'
 let g:ale_python_black_options = ' -l 119 --skip-string-normalization --skip-numeric-underscore-normalization'

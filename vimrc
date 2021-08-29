@@ -176,7 +176,6 @@ let ayucolor='mirage' " for mirage version of theme
 " let ayucolor="dark"   " for dark version of theme
 colorscheme ayu
 
-autocmd FileType python,rust,c,cpp setlocal omnifunc=v:lua.vim.lsp.omnifunc
 autocmd FileType python let b:coc_root_patterns = ["pyproject.toml", "poetry.lock", "requirements.txt", ".git"]
 
 " Avoid showing message extra message when using completion
@@ -206,7 +205,6 @@ let g:ale_sign_column_always = 1
 
 let g:ale_fixers = {
 \   'python': ['add_blank_lines_for_python_control_statements', 'autoimport', 'autopep8', 'black', 'isort'],
-\   'rust': ['rustfmt'],
 \   'c': ['clangtidy', 'clang-format'],
 \   'cpp': ['clangtidy', 'clang-format'],
 \   'json': ['jq'],
@@ -517,7 +515,7 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
 xmap <Leader>x  <Plug>(coc-convert-snippet)
 
-let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-cmake', 'coc-emmet', 'coc-flutter', 'coc-graphql', 'coc-snippets', 'coc-sql', 'coc-tasks', 'coc-yaml', 'coc-toml']
+let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-rust-analyzer', 'coc-cmake', 'coc-emmet', 'coc-flutter', 'coc-graphql', 'coc-snippets', 'coc-sql', 'coc-tasks', 'coc-yaml', 'coc-toml']
 
 " 告诉 asyncrun 运行时自动打开高度为 6 的 quickfix 窗口，不然你看不到任何输出，除非你自己手动用 :copen 打开它。
 let g:asyncrun_open = 6

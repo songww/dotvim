@@ -18,7 +18,7 @@
     }
   },
   "clangd.path": "/usr/local/opt/llvm/bin/clangd",
-  "rust-analyzer.enable": false,
+  "rust-analyzer.enable": true,
   "rust-analyzer.server.path": "/usr/local/bin/rust-analyzer",
   "rust-analyzer.updates.prompt": true,
   "rust-analyzer.updates.channel": "nightly",

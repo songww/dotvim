@@ -1,43 +1,35 @@
 {
   "languageserver": {
     "clangd": {
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".git"],
-      "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+      "rootPatterns": [
+        "compile_flags.txt",
+        "compile_commands.json",
+        ".git"
+      ],
+      "filetypes": [
+        "c",
+        "cc",
+        "cpp",
+        "c++",
+        "objc",
+        "objcpp"
+      ],
       "command": "/usr/local/opt/llvm/bin/clangd"
-    },
-    "rust-analyzer": {
-      "enable": true,
-      "filetypes": ["rust"],
-      "rootPatterns": ["Cargo.toml", ".git"],
-      "command": "/usr/local/bin/rust-analyzer",
-      "updates": {
-        "prompt": true,
-        "channel": "nightly"
-      },
-      "cargo": {
-        "allFeatures": true
-      },
-      "procMacro": {
-        "enable": true
-      },
-      "checkOnSave": {
-        "target": "aarch64-linux-andriod"
-      },
-      "lens": {
-        "methodReferences": true
-      }
     }
   },
-  "rust-analyzer.enable": false,
+  "clangd.path": "/usr/local/opt/llvm/bin/clangd",
+  "rust-analyzer.enable": true,
   "rust-analyzer.server.path": "/usr/local/bin/rust-analyzer",
   "rust-analyzer.updates.prompt": true,
   "rust-analyzer.updates.channel": "nightly",
+  "rust-analyzer.cargo.autoreload": true,
   "rust-analyzer.cargo.allFeatures": true,
-  "rust-analyzer.checkOnSave.target": "aarch64-linux-andriod",
-  "rust-analyzer.hoverActions.linksInHover": true,
   "python.pythonPath": "python",
   "python.formatting.provider": "black",
-  "python.formatting.blackArgs": ["--line-length", "119"],
+  "python.formatting.blackArgs": [
+    "--line-length",
+    "119"
+  ],
   "python.formatting.blackPath": "black",
   "python.linting.mypyEnabled": true,
   "python.linting.flake8Enabled": true,

@@ -47,15 +47,14 @@ Plug 'skywind3000/asyncrun.vim'
 
 Plug 'sheerun/vim-polyglot'
 
+Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
 
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
-
-Plug 'easymotion/vim-easymotion'
-Plug 'https://tpope.io/vim/repeat.git'
 
 Plug 'vim-test/vim-test'
 

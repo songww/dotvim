@@ -27,7 +27,7 @@ Plug '/usr/local/opt/fzf'
 
 Plug 'dense-analysis/ale'
 
-Plug 'ayu-theme/ayu-vim'
+Plug 'luxed/ayu-vim'
 
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
@@ -518,7 +518,7 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
 xmap <Leader>x  <Plug>(coc-convert-snippet)
 
-let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-rust-analyzer', 'coc-cmake', 'coc-emmet', 'coc-flutter', 'coc-graphql', 'coc-snippets', 'coc-sql', 'coc-tasks', 'coc-yaml', 'coc-toml']
+let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-rust-analyzer', 'coc-cmake', 'coc-emmet', 'coc-graphql', 'coc-snippets', 'coc-sql', 'coc-yaml', 'coc-toml']
 
 " 告诉 asyncrun 运行时自动打开高度为 6 的 quickfix 窗口，不然你看不到任何输出，除非你自己手动用 :copen 打开它。
 let g:asyncrun_open = 6
